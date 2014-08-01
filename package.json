@@ -1,0 +1,12 @@
+{
+    "version": "0.0.1",
+    "name": "com.yvertical.yvio.plugin",
+    "cordova_name": "YVPushPlugin",
+    "description": "Cordova YVertical Push Plugin",
+    "license": "Apache 2.0",
+    "keywords": [
+        "yvio",
+        "yvioplugin"
+    ],
+    "engines": []
+}

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="com.yvertical.yvio.plugin"
+        version="0.0.1">
+
+    <name>YVPushPlugin</name>
+
+    <description>
+        Cordova YVertical Push Plugin
+    </description>
+    <keywords> yvio,yvioplugin </keywords>
+
+    <license>Apache 2.0</license>
+
+
+    <!-- android -->
+    <platform name="android">
+
+	    <js-module src="www/YVPushPlugin.js" name="YVPushPlugin">
+	        <clobbers target = "YVPushPlugin"/>
+		</js-module>
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="YVPushPlugin">
+                <param name="android-package" value="com.yvertical.yvio.plugin.YVPushPlugin"/>
+            </feature>
+    
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+        </config-file>
+        
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+  
+            <receiver android:name="com.yvertical.yvio.plugin.YVPushPlugin">
+                <intent-filter>     
+                    <action android:name="android.intent.action.BOOT_COMPLETED"></action>   
+                </intent-filter> 
+            </receiver>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <service android:exported="false" android:name="org.eclipse.paho.android.service.MqttService">
+            <intent-filter>
+                <action android:name="org.eclipse.paho.android.service.MqttService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+            
+        </config-file>
+
+        <source-file src="src/android/android-support-v4.jar" target-dir="libs" />
+        
+		<source-file src="src/android/HIUApp.java" target-dir="src/com/yvertical/mdm" />
+		<source-file src="src/android/YvdaApp.java" target-dir="src/com/yvertical/yvda/app" />
+		
+		<source-file src="src/android/Constants.java" target-dir="src/com/yvertical/yvda/common" />
+		<source-file src="src/android/MDMUser.java" target-dir="src/com/yvertical/yvda/common" />
+		<source-file src="src/android/DeviceTerminal.java" target-dir="src/com/yvertical/yvda/common" />
+		
+		<source-file src="src/android/ActionListener.java" target-dir="src/com/yvertical/yvda/mqtt" />
+		<source-file src="src/android/YVMqttCallbackHandler.java" target-dir="src/com/yvertical/yvda/mqtt" />
+		<source-file src="src/android/YVMqttConnection.java" target-dir="src/com/yvertical/yvda/mqtt" />
+		
+		
+		<source-file src="src/android/YVPushPlugin.java" target-dir="src/com/yvertical/yvio/plugin" />
+		
+		<source-file src="src/android/AlarmPingSender.java" target-dir="src/org/eclipse/paho/android/service" />
+		<source-file src="src/android/DatabaseMessageStore.java" target-dir="src/org/eclipse/paho/android/service" />
+		<source-file src="src/android/MessageStore.java" target-dir="src/org/eclipse/paho/android/service" />
+		<source-file src="src/android/MqttAndroidClient.java" target-dir="src/org/eclipse/paho/android/service" />
+		<source-file src="src/android/MqttConnection.java" target-dir="src/org/eclipse/paho/android/service" />
+		<source-file src="src/android/MqttDeliveryTokenAndroid.java" target-dir="src/org/eclipse/paho/android/service" />
+		<source-file src="src/android/MqttService.java" target-dir="src/org/eclipse/paho/android/service" />
+		<source-file src="src/android/MqttServiceBinder.java" target-dir="src/org/eclipse/paho/android/service" />
+		<source-file src="src/android/MqttServiceConstants.java" target-dir="src/org/eclipse/paho/android/service" />
+		<source-file src="src/android/MqttTokenAndroid.java" target-dir="src/org/eclipse/paho/android/service" />
+		<source-file src="src/android/MqttTraceHandler.java" target-dir="src/org/eclipse/paho/android/service" />
+		<source-file src="src/android/ParcelableMqttMessage.java" target-dir="src/org/eclipse/paho/android/service" />
+		<source-file src="src/android/Status.java" target-dir="src/org/eclipse/paho/android/service" />
+				
+		<source-file src="src/android/IMqttActionListener.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/IMqttAsyncClient.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/IMqttClient.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/IMqttDeliveryToken.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/IMqttToken.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/MqttAsyncClient.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/MqttCallback.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/MqttClient.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/MqttClientPersistence.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/MqttConnectOptions.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/MqttDeliveryToken.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/MqttException.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/MqttMessage.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/MqttPersistable.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/MqttPersistenceException.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/MqttPingSender.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/MqttProtocolVersion.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/MqttSecurityException.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/MqttToken.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/MqttTopic.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		<source-file src="src/android/TimerPingSender.java" target-dir="src/org/eclipse/paho/client/mqttv3" />
+		
+		<source-file src="src/android/ClientComms.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/ClientDefaults.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/ClientState.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/CommsCallback.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/CommsReceiver.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/CommsSender.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/CommsTokenStore.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/ConnectActionListener.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/DestinationProvider.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/ExceptionHelper.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/FileLock.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/LocalNetworkModule.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/MessageCatalog.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/MqttPersistentData.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/NetworkModule.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/ResourceBundleCatalog.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/SSLNetworkModule.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/TCPNetworkModule.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/Token.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal" />
+		<source-file src="src/android/MqttPingReq.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+		<source-file src="src/android/MqttPingResp.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+
+		
+		
+		<source-file src="src/android/logcat.properties" target-dir="src/org/eclipse/paho/client/mqttv3/internal/nls" />
+		<source-file src="src/android/messages_cs.properties" target-dir="src/org/eclipse/paho/client/mqttv3/internal/nls" />
+		<source-file src="src/android/messages_de.properties" target-dir="src/org/eclipse/paho/client/mqttv3/internal/nls" />
+		<source-file src="src/android/messages_es.properties" target-dir="src/org/eclipse/paho/client/mqttv3/internal/nls" />
+		<source-file src="src/android/messages_fr.properties" target-dir="src/org/eclipse/paho/client/mqttv3/internal/nls" />
+		<source-file src="src/android/messages_hu.properties" target-dir="src/org/eclipse/paho/client/mqttv3/internal/nls" />
+		<source-file src="src/android/messages_it.properties" target-dir="src/org/eclipse/paho/client/mqttv3/internal/nls" />
+		<source-file src="src/android/messages_ja.properties" target-dir="src/org/eclipse/paho/client/mqttv3/internal/nls" />
+		<source-file src="src/android/messages_ko.properties" target-dir="src/org/eclipse/paho/client/mqttv3/internal/nls" />
+		<source-file src="src/android/messages_pl.properties" target-dir="src/org/eclipse/paho/client/mqttv3/internal/nls" />
+		<source-file src="src/android/messages_pt_BR.properties" target-dir="src/org/eclipse/paho/client/mqttv3/internal/nls" />
+		<source-file src="src/android/messages_ru.properties" target-dir="src/org/eclipse/paho/client/mqttv3/internal/nls" />
+		<source-file src="src/android/messages_zh_CN.properties" target-dir="src/org/eclipse/paho/client/mqttv3/internal/nls" />
+		<source-file src="src/android/messages_zh_TW.properties" target-dir="src/org/eclipse/paho/client/mqttv3/internal/nls" />
+		<source-file src="src/android/messages.properties" target-dir="src/org/eclipse/paho/client/mqttv3/internal/nls" />
+		
+		<source-file src="src/android/SimpleBase64Encoder.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/security" />
+		<source-file src="src/android/SSLSocketFactoryFactory.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/security" />
+		
+        <source-file src="src/android/CountingInputStream.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttAck.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttConnack.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttConnect.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttDisconnect.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttInputStream.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttOutputStream.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttPersistableWireMessage.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttPubAck.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttPubComp.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttPublish.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttPubRec.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttPubRel.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttReceivedMessage.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttSuback.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttSubscribe.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MqttUnsubscribe.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+
+        <source-file src="src/android/MqttUnsubAck.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+
+        <source-file src="src/android/MqttWireMessage.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MultiByteArrayInputStream.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        <source-file src="src/android/MultiByteInteger.java" target-dir="src/org/eclipse/paho/client/mqttv3/internal/wire" />
+        
+        <source-file src="src/android/JSR47Logger.java" target-dir="src/org/eclipse/paho/client/mqttv3/logging" />
+        <source-file src="src/android/Logger.java" target-dir="src/org/eclipse/paho/client/mqttv3/logging" />
+        <source-file src="src/android/LoggerFactory.java" target-dir="src/org/eclipse/paho/client/mqttv3/logging" />
+        <source-file src="src/android/SimpleLogFormatter.java" target-dir="src/org/eclipse/paho/client/mqttv3/logging" />
+        <source-file src="src/android/jsr47min.properties" target-dir="src/org/eclipse/paho/client/mqttv3/logging" />
+        
+        <source-file src="src/android/MemoryPersistence.java" target-dir="src/org/eclipse/paho/client/mqttv3/persist" />
+        <source-file src="src/android/MqttDefaultFilePersistence.java" target-dir="src/org/eclipse/paho/client/mqttv3/persist" />
+        
+        <source-file src="src/android/Debug.java" target-dir="src/org/eclipse/paho/client/mqttv3/util" />
+        <source-file src="src/android/Strings.java" target-dir="src/org/eclipse/paho/client/mqttv3/util" />
+		
+    </platform>
+</plugin>
