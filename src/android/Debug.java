@@ -1,10 +1,14 @@
-/* 
- * Copyright (c) 2009, 2012 IBM Corp.
+/*******************************************************************************
+ * Copyright (c) 2009, 2014 IBM Corp.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * and Eclipse Distribution License v1.0 which accompany this distribution. 
+ *
+ * The Eclipse Public License is available at 
+ *    http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at 
+ *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
  * Contributors:
  *    Dave Locke - initial API and implementation and/or initial documentation
@@ -29,14 +33,13 @@ import org.eclipse.paho.client.mqttv3.logging.LoggerFactory;
  */
 public class Debug {
 	
-	final static String className = ClientComms.class.getName();
-	Logger log = LoggerFactory.getLogger(LoggerFactory.MQTT_CLIENT_MSG_CAT,className);
+	private static final String CLASS_NAME = ClientComms.class.getName();
+	private static final Logger log = LoggerFactory.getLogger(LoggerFactory.MQTT_CLIENT_MSG_CAT,CLASS_NAME);
+	private static final String separator = "==============";
+	private static final String lineSep = System.getProperty("line.separator","\n");
 	
-	static String separator = "==============";
-	static String lineSep = System.getProperty("line.separator","\n");
-	
-	String clientID;
-	ClientComms comms;
+	private String clientID;
+	private ClientComms comms;
 	
 	/**
 	 * Set the debug facility up for a specific client
@@ -90,7 +93,7 @@ public class Debug {
     	vInfo.append(left("Version",20,' ') + ":  "+ ClientComms.VERSION + lineSep);
     	vInfo.append(left("Build Level",20,' ') + ":  "+ ClientComms.BUILD_LEVEL + lineSep);
     	vInfo.append(separator+separator+separator+lineSep);
-    	log.fine(className,"dumpVersion", vInfo.toString());
+    	log.fine(CLASS_NAME,"dumpVersion", vInfo.toString());
 	}
 
 	/**
@@ -99,7 +102,7 @@ public class Debug {
 	public void dumpSystemProperties() {
 		
 	    Properties sysProps = System.getProperties();
-    	log.fine(className,"dumpSystemProperties", dumpProperties(sysProps, "SystemProperties").toString());
+    	log.fine(CLASS_NAME,"dumpSystemProperties", dumpProperties(sysProps, "SystemProperties").toString());
 	}
 
 	/**
@@ -109,7 +112,7 @@ public class Debug {
 		Properties props = null;
 	    if (comms != null && comms.getClientState() != null ) {
 	    	props = comms.getClientState().getDebug();
-	    	log.fine(className,"dumpClientState", dumpProperties(props, clientID + " : ClientState").toString());
+	    	log.fine(CLASS_NAME,"dumpClientState", dumpProperties(props, clientID + " : ClientState").toString());
 	    }
 	}
 
@@ -120,7 +123,7 @@ public class Debug {
 		Properties props = null;
 	    if (comms != null) {
 	    	props = comms.getDebug();
-	    	log.fine(className,"dumpClientComms", dumpProperties(props, clientID + " : ClientComms").toString());
+	    	log.fine(CLASS_NAME,"dumpClientComms", dumpProperties(props, clientID + " : ClientComms").toString());
 	    }
 	}
 	
@@ -131,7 +134,7 @@ public class Debug {
 		Properties props = null;
 	    if (comms != null) {
 	    	props = comms.getConOptions().getDebug();
-	    	log.fine(className,"dumpConOptions", dumpProperties(props, clientID + " : Connect Options").toString());
+	    	log.fine(CLASS_NAME,"dumpConOptions", dumpProperties(props, clientID + " : Connect Options").toString());
 	    }
 	}
 

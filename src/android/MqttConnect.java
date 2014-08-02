@@ -1,13 +1,18 @@
-/* 
- * Copyright (c) 2009, 2012 IBM Corp.
+/*******************************************************************************
+ * Copyright (c) 2009, 2014 IBM Corp.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * and Eclipse Distribution License v1.0 which accompany this distribution. 
+ *
+ * The Eclipse Public License is available at 
+ *    http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at 
+ *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
  * Contributors:
  *    Dave Locke - initial API and implementation and/or initial documentation
+ *    Ian Craggs - MQTT 3.1.1 support
  */
 package org.eclipse.paho.client.mqttv3.internal.wire;
 
@@ -19,14 +24,13 @@ import java.io.IOException;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.MqttProtocolVersion;
 
 /**
  * An on-the-wire representation of an MQTT CONNECT message.
  */
 public class MqttConnect extends MqttWireMessage {
 
-	public static String KEY = "Con";
+	public static final String KEY = "Con";
 
 	private String clientId;
 	private boolean cleanSession;
@@ -35,7 +39,7 @@ public class MqttConnect extends MqttWireMessage {
 	private char[] password;
 	private int keepAliveInterval;
 	private String willDestination;
-	private MqttProtocolVersion protocol_version;
+	private int MqttVersion;
 	
 	/**
 	 * Constructor for an on the wire MQTT connect message
@@ -52,14 +56,13 @@ public class MqttConnect extends MqttWireMessage {
 
 		String protocol_name = decodeUTF8(dis);
 		int protocol_version = dis.readByte();
-		this.protocol_version = MqttProtocolVersion.valueOf(protocol_version);
 		byte connect_flags = dis.readByte();
 		keepAliveInterval = dis.readUnsignedShort();
 		clientId = decodeUTF8(dis);
 		dis.close();
 	}
 
-	public MqttConnect(String clientId, boolean cleanSession, int keepAliveInterval, String userName, char[] password, MqttMessage willMessage, String willDestination, MqttProtocolVersion version) {
+	public MqttConnect(String clientId, int MqttVersion, boolean cleanSession, int keepAliveInterval, String userName, char[] password, MqttMessage willMessage, String willDestination) {
 		super(MqttWireMessage.MESSAGE_TYPE_CONNECT);
 		this.clientId = clientId;
 		this.cleanSession = cleanSession;
@@ -68,7 +71,7 @@ public class MqttConnect extends MqttWireMessage {
 		this.password = password;
 		this.willMessage = willMessage;
 		this.willDestination = willDestination;
-		this.protocol_version = version;
+		this.MqttVersion = MqttVersion;
 	}
 
 	public String toString() {
@@ -90,14 +93,14 @@ public class MqttConnect extends MqttWireMessage {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			DataOutputStream dos = new DataOutputStream(baos);
 			
-			//Variable headers are different in 3.1 and 3.1.1.
-			if(MqttProtocolVersion.V3_1 == protocol_version){
+			if (MqttVersion == 3) {
 				encodeUTF8(dos,"MQIsdp");			
-				dos.write(3);
-			}else{
-				encodeUTF8(dos,"MQTT");			
-				dos.write(4);
 			}
+			else if (MqttVersion == 4) {
+				encodeUTF8(dos,"MQTT");			
+			}
+			dos.write(MqttVersion);
+
 			byte connectFlags = 0;
 			
 			if (cleanSession) {
@@ -160,6 +163,6 @@ public class MqttConnect extends MqttWireMessage {
 	}
 	
 	public String getKey() {
-		return new String(KEY);
+		return KEY;
 	}
 }

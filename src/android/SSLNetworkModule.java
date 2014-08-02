@@ -1,10 +1,14 @@
-/* 
- * Copyright (c) 2009, 2012 IBM Corp.
+/*******************************************************************************
+ * Copyright (c) 2009, 2014 IBM Corp.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * and Eclipse Distribution License v1.0 which accompany this distribution. 
+ *
+ * The Eclipse Public License is available at 
+ *    http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at 
+ *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
  * Contributors:
  *    Dave Locke - initial API and implementation and/or initial documentation
@@ -24,11 +28,11 @@ import org.eclipse.paho.client.mqttv3.logging.LoggerFactory;
  * A network module for connecting over SSL.
  */
 public class SSLNetworkModule extends TCPNetworkModule {
+	private static final String CLASS_NAME = SSLNetworkModule.class.getName();
+	private static final Logger log = LoggerFactory.getLogger(LoggerFactory.MQTT_CLIENT_MSG_CAT,CLASS_NAME);
+
 	private String[] enabledCiphers;
 	private int handshakeTimeoutSecs;
-
-	final static String className = SSLNetworkModule.class.getName();
-	Logger log = LoggerFactory.getLogger(LoggerFactory.MQTT_CLIENT_MSG_CAT,className);
 
 	/**
 	 * Constructs a new SSLNetworkModule using the specified host and
@@ -63,7 +67,7 @@ public class SSLNetworkModule extends TCPNetworkModule {
 					ciphers+=enabledCiphers[i];
 				}
 				//@TRACE 260=setEnabledCiphers ciphers={0}
-				log.fine(className,methodName,"260",new Object[]{ciphers});
+				log.fine(CLASS_NAME,methodName,"260",new Object[]{ciphers});
 			}
 			((SSLSocket) socket).setEnabledCipherSuites(enabledCiphers);
 		}

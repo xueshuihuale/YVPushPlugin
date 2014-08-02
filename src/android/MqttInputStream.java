@@ -1,10 +1,14 @@
-/* 
- * Copyright (c) 2009, 2012 IBM Corp.
+/*******************************************************************************
+ * Copyright (c) 2009, 2014 IBM Corp.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * and Eclipse Distribution License v1.0 which accompany this distribution. 
+ *
+ * The Eclipse Public License is available at 
+ *    http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at 
+ *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
  * Contributors:
  *    Dave Locke - initial API and implementation and/or initial documentation
@@ -27,9 +31,10 @@ import org.eclipse.paho.client.mqttv3.logging.LoggerFactory;
  * <code>MqttWireMessage</code>. 
  */
 public class MqttInputStream extends InputStream {
-	private static final String className = MqttInputStream.class.getName();
+	private static final String CLASS_NAME = MqttInputStream.class.getName();
+	private static final Logger log = LoggerFactory.getLogger(LoggerFactory.MQTT_CLIENT_MSG_CAT, CLASS_NAME);
+
 	private DataInputStream in;
-	Logger log = LoggerFactory.getLogger(LoggerFactory.MQTT_CLIENT_MSG_CAT, className);
 
 	public MqttInputStream(InputStream in) {
 		this.in = new DataInputStream(in);
@@ -70,7 +75,7 @@ public class MqttInputStream extends InputStream {
 		System.arraycopy(header,0,packet,0, header.length);
 		MqttWireMessage message = MqttWireMessage.createWireMessage(packet);
 		// @TRACE 501= received {0} 
-		log.fine(className, methodName, "501",new Object[] {message});
+		log.fine(CLASS_NAME, methodName, "501",new Object[] {message});
 		return message;
 	}
 }

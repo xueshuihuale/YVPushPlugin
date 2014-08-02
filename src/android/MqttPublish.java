@@ -1,10 +1,14 @@
-/* 
- * Copyright (c) 2009, 2012 IBM Corp.
+/*******************************************************************************
+ * Copyright (c) 2009, 2014 IBM Corp.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * and Eclipse Distribution License v1.0 which accompany this distribution. 
+ *
+ * The Eclipse Public License is available at 
+ *    http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at 
+ *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
  * Contributors:
  *    Dave Locke - initial API and implementation and/or initial documentation
@@ -92,16 +96,16 @@ public class MqttPublish extends MqttPersistableWireMessage {
 
 		StringBuffer sb = new StringBuffer();
 		sb.append(super.toString());
-		sb.append(" qos:" + message.getQos());
+		sb.append(" qos:").append(message.getQos());
 		if (message.getQos() > 0) {
-			sb.append(" msgId:" + msgId);
+			sb.append(" msgId:").append(msgId);
 		}
-		sb.append(" retained:" + message.isRetained());
-		sb.append(" dup:" + duplicate);
-		sb.append(" topic:\"" + topicName + "\"");
-		sb.append(" payload:[hex:" + hex);
-		sb.append(" utf8:\"" + string + "\"");
-		sb.append(" length:" + payload.length + "]");
+		sb.append(" retained:").append(message.isRetained());
+		sb.append(" dup:").append(duplicate);
+		sb.append(" topic:\"").append(topicName).append("\"");
+		sb.append(" payload:[hex:").append(hex);
+		sb.append(" utf8:\"").append(string).append("\"");
+		sb.append(" length:").append(payload.length).append("]");
 
 		return sb.toString();
 	}

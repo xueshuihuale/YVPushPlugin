@@ -1,10 +1,14 @@
-/* 
- * Copyright (c) 2009, 2012 IBM Corp.
+/*******************************************************************************
+ * Copyright (c) 2009, 2014 IBM Corp.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * and Eclipse Distribution License v1.0 which accompany this distribution. 
+ *
+ * The Eclipse Public License is available at 
+ *    http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at 
+ *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
  * Contributors:
  *    Dave Locke - initial API and implementation and/or initial documentation
@@ -39,13 +43,13 @@ import org.eclipse.paho.client.mqttv3.internal.MqttPersistentData;
  * with any instance of '/', '\\', ':' or ' ' removed.
  */
 public class MqttDefaultFilePersistence implements MqttClientPersistence {
+	private static final String MESSAGE_FILE_EXTENSION = ".msg";
+	private static final String MESSAGE_BACKUP_FILE_EXTENSION = ".bup";
+	private static final String LOCK_FILENAME = ".lck"; 
 
 	private File dataDir;
 	private File clientDir = null;
 	private FileLock fileLock = null;
-	private static final String MESSAGE_FILE_EXTENSION = ".msg";
-	private static final String MESSAGE_BACKUP_FILE_EXTENSION = ".bup";
-	private static final String LOCK_FILENAME = ".lck"; 
 	
 	private static final FilenameFilter FILE_FILTER = new FilenameFilter() { 
 		public boolean accept(File dir, String name) { return name.endsWith(MESSAGE_FILE_EXTENSION); }

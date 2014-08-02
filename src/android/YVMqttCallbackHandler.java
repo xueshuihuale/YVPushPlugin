@@ -12,11 +12,17 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONObject;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.yvertical.mdm.HIUApp;
 import com.yvertical.yvda.common.Constants;
+import com.yvertical.yvio.plugin.YVPushPlugin;
 
 public class YVMqttCallbackHandler implements MqttCallback {
 	private String TAG = "MyPlugin";

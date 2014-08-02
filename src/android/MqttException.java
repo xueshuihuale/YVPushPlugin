@@ -1,13 +1,18 @@
-/* 
- * Copyright (c) 2009, 2012 IBM Corp.
+/*******************************************************************************
+ * Copyright (c) 2009, 2014 IBM Corp.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * and Eclipse Distribution License v1.0 which accompany this distribution. 
+ *
+ * The Eclipse Public License is available at 
+ *    http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at 
+ *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
  * Contributors:
  *    Dave Locke - initial API and implementation and/or initial documentation
+ *    Ian Craggs - MQTT 3.1.1 support
  */
 package org.eclipse.paho.client.mqttv3;
 
@@ -39,6 +44,9 @@ public class MqttException extends Exception {
 
 	/** An unexpected error has occurred. */
 	public static final short REASON_CODE_UNEXPECTED_ERROR				= 0x06;
+	
+	/** Error from subscribe - returned from the server. */
+	public static final short REASON_CODE_SUBSCRIBE_FAILED				= 0x80;
 	
 	/** 
 	 * Client timed out while waiting for a response from the server.

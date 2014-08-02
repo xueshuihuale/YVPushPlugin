@@ -1,13 +1,18 @@
-/* 
- * Copyright (c) 2009, 2012 IBM Corp.
+/*******************************************************************************
+ * Copyright (c) 2009, 2014 IBM Corp.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * and Eclipse Distribution License v1.0 which accompany this distribution. 
+ *
+ * The Eclipse Public License is available at 
+ *    http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at 
+ *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
  * Contributors:
  *    Dave Locke - initial API and implementation and/or initial documentation
+ *    Ian Craggs - MQTT 3.1.1 support
  */
 package org.eclipse.paho.client.mqttv3.internal.wire;
 
@@ -22,7 +27,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
  * An on-the-wire representation of an MQTT SUBACK.
  */
 public class MqttSuback extends MqttAck {
-	private int[] grantedQos;		// Not currently made available to anyone. 
+	private int[] grantedQos;	
 	
 	public MqttSuback(byte info, byte[] data) throws IOException {
 		super(MqttWireMessage.MESSAGE_TYPE_SUBACK);
@@ -46,11 +51,16 @@ public class MqttSuback extends MqttAck {
 	}
 
 	public String toString() {
-    String rc = super.toString() + " granted Qos";
-    for (int i = 0; i < grantedQos.length; ++i) {
-    	rc += " " + grantedQos[i];
-    }
-    return rc;
-  }
-
+		StringBuffer sb = new StringBuffer();
+		sb.append(super.toString()).append(" granted Qos");
+		for (int i = 0; i < grantedQos.length; ++i) {
+			sb.append(" ").append(grantedQos[i]);
+		}
+		return sb.toString();
+	}
+	
+	public int[] getGrantedQos() {
+		return grantedQos;
+	}
+	
 }

@@ -1,10 +1,14 @@
-/* 
- * Copyright (c) 2009, 2012 IBM Corp.
+/*******************************************************************************
+ * Copyright (c) 2009, 2014 IBM Corp.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * and Eclipse Distribution License v1.0 which accompany this distribution. 
+ *
+ * The Eclipse Public License is available at 
+ *    http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at 
+ *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
  * Contributors:
  *    Dave Locke - initial API and implementation and/or initial documentation
@@ -39,7 +43,7 @@ public class LoggerFactory {
 	 * Default message catalog.
 	 */
 	public final static String MQTT_CLIENT_MSG_CAT = "org.eclipse.paho.client.mqttv3.internal.nls.logcat";
-	private final static String className = LoggerFactory.class.getName();
+	private static final String CLASS_NAME = LoggerFactory.class.getName();
 	
 	private static String overrideloggerClassName = null;
 	/**
@@ -70,7 +74,7 @@ public class LoggerFactory {
 //		}
 
 		if (null == logger) {
-			throw new MissingResourceException("Error locating the logging class", className, loggerID);
+			throw new MissingResourceException("Error locating the logging class", CLASS_NAME, loggerID);
 		}
 
 		return logger;

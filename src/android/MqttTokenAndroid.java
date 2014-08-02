@@ -1,15 +1,14 @@
-/*
-============================================================================ 
-Licensed Materials - Property of IBM
-
-5747-SM3
- 
-(C) Copyright IBM Corp. 1999, 2014 All Rights Reserved.
- 
-US Government Users Restricted Rights - Use, duplication or
-disclosure restricted by GSA ADP Schedule Contract with
-IBM Corp.
-============================================================================
+/*******************************************************************************
+ * Copyright (c) 1999, 2014 IBM Corp.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * and Eclipse Distribution License v1.0 which accompany this distribution. 
+ *
+ * The Eclipse Public License is available at 
+ *    http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at 
+ *   http://www.eclipse.org/org/documents/edl-v10.php.
  */
 package org.eclipse.paho.android.service;
 
@@ -18,6 +17,7 @@ import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
+import org.eclipse.paho.client.mqttv3.internal.wire.MqttWireMessage;
 
 /**
  * <p>
@@ -233,4 +233,22 @@ class MqttTokenAndroid implements IMqttToken {
   public int getMessageId() {
     return (delegate != null) ? delegate.getMessageId() : 0;
   }
+  
+  @Override
+  public MqttWireMessage getResponse() {
+    return delegate.getResponse();
+  }
+  
+  @Override
+  public boolean getSessionPresent() {
+    return delegate.getSessionPresent();
+  }
+  
+  @Override
+  public int[] getGrantedQos() {
+    return delegate.getGrantedQos();
+  }
+  
+  
+  
 }

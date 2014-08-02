@@ -1,10 +1,14 @@
-/* 
- * Copyright (c) 2009, 2012 IBM Corp.
+/*******************************************************************************
+ * Copyright (c) 2009, 2014 IBM Corp.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * and Eclipse Distribution License v1.0 which accompany this distribution. 
+ *
+ * The Eclipse Public License is available at 
+ *    http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at 
+ *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
  * Contributors:
  *    Dave Locke - initial API and implementation and/or initial documentation
@@ -25,10 +29,10 @@ import org.eclipse.paho.client.mqttv3.logging.LoggerFactory;
  * <code>MqttWireMessage</code>. 
  */
 public class MqttOutputStream extends OutputStream {
-	private static final String className = MqttOutputStream.class.getName();
-	private BufferedOutputStream out;
+	private static final String CLASS_NAME = MqttOutputStream.class.getName();
+	private static final Logger log = LoggerFactory.getLogger(LoggerFactory.MQTT_CLIENT_MSG_CAT, CLASS_NAME);
 
-	Logger log = LoggerFactory.getLogger(LoggerFactory.MQTT_CLIENT_MSG_CAT, className);
+	private BufferedOutputStream out;
 	
 	public MqttOutputStream(OutputStream out) {
 		this.out = new BufferedOutputStream(out);
@@ -66,7 +70,7 @@ public class MqttOutputStream extends OutputStream {
 		out.write(bytes,0,bytes.length);
 		out.write(pl,0,pl.length);
 		// @TRACE 500= sent {0}
-    	log.fine(className, methodName, "500", new Object[]{message});
+    	log.fine(CLASS_NAME, methodName, "500", new Object[]{message});
 	}
 }
 

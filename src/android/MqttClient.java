@@ -1,13 +1,18 @@
-/*
- * Copyright (c) 2009, 2012 IBM Corp.
+/*******************************************************************************
+ * Copyright (c) 2009, 2014 IBM Corp.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * and Eclipse Distribution License v1.0 which accompany this distribution. 
+ *
+ * The Eclipse Public License is available at 
+ *    http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at 
+ *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
  * Contributors:
  *    Dave Locke - initial API and implementation and/or initial documentation
+ *    Ian Craggs - MQTT 3.1.1 support
  */
 package org.eclipse.paho.client.mqttv3;
 
@@ -15,8 +20,6 @@ import java.util.Properties;
 
 import javax.net.SocketFactory;
 
-import org.eclipse.paho.client.mqttv3.logging.Logger;
-import org.eclipse.paho.client.mqttv3.logging.LoggerFactory;
 import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 import org.eclipse.paho.client.mqttv3.util.Debug;
 
@@ -53,13 +56,11 @@ import org.eclipse.paho.client.mqttv3.util.Debug;
  * @see IMqttClient
  */
 public class MqttClient implements IMqttClient { //), DestinationProvider {
+	//private static final String CLASS_NAME = MqttClient.class.getName();
+	//private static final Logger log = LoggerFactory.getLogger(LoggerFactory.MQTT_CLIENT_MSG_CAT,CLASS_NAME);
 
 	protected MqttAsyncClient aClient = null;  // Delegate implementation to MqttAsyncClient
 	protected long timeToWait = -1;				// How long each method should wait for action to complete
-
-	final static String className = MqttClient.class.getName();
-	public Logger log = LoggerFactory.getLogger(LoggerFactory.MQTT_CLIENT_MSG_CAT,className);
-
 
 	/**
 	 * Create an MqttClient that can be used to communicate with an MQTT server.
@@ -236,6 +237,15 @@ public class MqttClient implements IMqttClient { //), DestinationProvider {
 	public void connect(MqttConnectOptions options) throws MqttSecurityException, MqttException {
 		aClient.connect(options, null, null).waitForCompletion(getTimeToWait());
 	}
+	
+	/*
+	 * @see IMqttClient#connect(MqttConnectOptions)
+	 */
+	public IMqttToken connectWithResult(MqttConnectOptions options) throws MqttSecurityException, MqttException {
+		IMqttToken tok = aClient.connect(options, null, null);
+		tok.waitForCompletion(getTimeToWait());
+		return tok;
+	}
 
 	/*
 	 * @see IMqttClient#disconnect()
@@ -307,7 +317,15 @@ public class MqttClient implements IMqttClient { //), DestinationProvider {
 	 * @see IMqttClient#subscribe(String[], int[])
 	 */
 	public void subscribe(String[] topicFilters, int[] qos) throws MqttException {
-		aClient.subscribe(topicFilters, qos, null,null).waitForCompletion(getTimeToWait());
+		IMqttToken tok = aClient.subscribe(topicFilters, qos, null, null);
+		tok.waitForCompletion(getTimeToWait());
+		int[] grantedQos = tok.getGrantedQos();
+		for (int i = 0; i < grantedQos.length; ++i) {
+			qos[i] = grantedQos[i];
+		}
+		if (grantedQos.length == 1 && qos[0] == 0x80) {
+			throw new MqttException(MqttException.REASON_CODE_SUBSCRIBE_FAILED);
+		}
 	}
 
 	/*
@@ -445,16 +463,4 @@ public class MqttClient implements IMqttClient { //), DestinationProvider {
 		return (aClient.getDebug());
 	}
 	
-	/**
-	 * Return Current Mqtt protocol version. Client supports version 3.1 and 3.1.1. 
-	 * This value is V3_1 by default.
-	 * @return return a "type safe enum" class to state current version.
-	 */
-	public MqttProtocolVersion getProtocolVersion() {
-		return aClient.getProtocolVersion();
-	}
-
-	public void setProtocolVersion(MqttProtocolVersion version) {
-		aClient.setProtocolVersion(version);
-	}
 }

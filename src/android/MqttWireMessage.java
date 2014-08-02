@@ -1,10 +1,14 @@
-/* 
- * Copyright (c) 2009, 2012 IBM Corp.
+/*******************************************************************************
+ * Copyright (c) 2009, 2014 IBM Corp.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * and Eclipse Distribution License v1.0 which accompany this distribution. 
+ *
+ * The Eclipse Public License is available at 
+ *    http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at 
+ *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
  * Contributors:
  *    Dave Locke - initial API and implementation and/or initial documentation
@@ -27,9 +31,7 @@ import org.eclipse.paho.client.mqttv3.internal.ExceptionHelper;
 /**
  * An on-the-wire representation of an MQTT message.
  */
-public abstract class MqttWireMessage {
-	protected static final String STRING_ENCODING = "UTF-8";
-	
+public abstract class MqttWireMessage {	
 	public static final byte MESSAGE_TYPE_CONNECT = 1;
 	public static final byte MESSAGE_TYPE_CONNACK = 2;
 	public static final byte MESSAGE_TYPE_PUBLISH = 3;
@@ -44,14 +46,16 @@ public abstract class MqttWireMessage {
 	public static final byte MESSAGE_TYPE_PINGREQ = 12;
 	public static final byte MESSAGE_TYPE_PINGRESP = 13;
 	public static final byte MESSAGE_TYPE_DISCONNECT = 14;
+
+	protected static final String STRING_ENCODING = "UTF-8";
 	
-	String packet_names[] = { "reserved", "CONNECT", "CONNACK", "PUBLISH",
+	private static final String PACKET_NAMES[] = { "reserved", "CONNECT", "CONNACK", "PUBLISH",
 			"PUBACK", "PUBREC", "PUBREL", "PUBCOMP", "SUBSCRIBE", "SUBACK",
 			"UNSUBSCRIBE", "UNSUBACK", "PINGREQ", "PINGRESP", "DISCONNECT" };
 
-	/** The type of the message (e.g. CONNECT, PUBLISH, PUBACK) */
+	//The type of the message (e.g. CONNECT, PUBLISH, PUBACK)
 	private byte type;
-	/** The MQTT message ID */
+	//The MQTT message ID
 	protected int msgId;
 	
 	protected boolean duplicate = false;
@@ -69,7 +73,7 @@ public abstract class MqttWireMessage {
 	 * Sub-classes should override this to encode the message info.
 	 * Only the least-significant four bits will be used.
 	 */
-	abstract protected byte getMessageInfo();
+	protected abstract byte getMessageInfo();
 	
 	/**
 	 * Sub-classes should override this method to supply the payload bytes.
@@ -106,7 +110,7 @@ public abstract class MqttWireMessage {
 	 * @return key a key associated with the message
 	 */
 	public String getKey() {
-		return new Integer(getMessageId()).toString();
+		return Integer.valueOf(getMessageId()).toString();
 	}
 	
 	public byte[] getHeader() throws MqttException {
@@ -346,7 +350,7 @@ public abstract class MqttWireMessage {
 	}
 
 	public String toString() {
-		return packet_names[type];
+		return PACKET_NAMES[type];
 	}
 
 }

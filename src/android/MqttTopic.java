@@ -1,10 +1,14 @@
-/* 
- * Copyright (c) 2009, 2012 IBM Corp.
+/*******************************************************************************
+ * Copyright (c) 2009, 2014 IBM Corp.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * and Eclipse Distribution License v1.0 which accompany this distribution. 
+ *
+ * The Eclipse Public License is available at 
+ *    http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at 
+ *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
  * Contributors:
  *    Dave Locke - initial API and implementation and/or initial documentation
@@ -48,11 +52,6 @@ public class MqttTopic {
 	public static final String MULTI_LEVEL_WILDCARD_PATTERN = TOPIC_LEVEL_SEPARATOR + MULTI_LEVEL_WILDCARD;
 
 	/**
-	 * Single-level wildcard pattern(/+)
-	 */
-	public static final String SINGLE_LEVEL_WILDCARD_PATTERN = TOPIC_LEVEL_SEPARATOR + SINGLE_LEVEL_WILDCARD;
-	
-	/**
 	 * Topic wildcards (#+)
 	 */
 	public static final String TOPIC_WILDCARDS = MULTI_LEVEL_WILDCARD + SINGLE_LEVEL_WILDCARD;
@@ -60,6 +59,7 @@ public class MqttTopic {
 	//topic name and topic filter length range defined in the spec
 	private static final int MIN_TOPIC_LEN = 1;
 	private static final int MAX_TOPIC_LEN = 65535;
+	private static final char NUL = '\u0000';
 	
 	private ClientComms comms;
 	private String name;
@@ -190,12 +190,7 @@ public class MqttTopic {
 			// multilevel wildcard. It must be used next to the topic level
 			// separator, except when it is specified on
 			// its own.
-			if (topicString.contains(SINGLE_LEVEL_WILDCARD)
-					&& topicString.indexOf(SINGLE_LEVEL_WILDCARD_PATTERN) == -1) {
-				throw new IllegalArgumentException(
-						"Invalid usage of single-level wildcard in topic string: "
-								+ topicString);
-			}
+			validateSingleLevelWildcard(topicString);
 
 			return;
 		}
@@ -208,5 +203,27 @@ public class MqttTopic {
 					"The topic name MUST NOT contain any wildard characters (#+)");
 		}
 	}
+	
+    private static void validateSingleLevelWildcard(String topicString) {
+        char singleLevelWildcardChar = SINGLE_LEVEL_WILDCARD.charAt(0);
+        char topicLevelSeparatorChar = TOPIC_LEVEL_SEPARATOR.charAt(0);
+
+        char[] chars = topicString.toCharArray();
+        int length = chars.length;
+        char prev = NUL, next = NUL;
+        for (int i = 0; i < length; i++) {
+            prev = (i - 1 >= 0) ? chars[i - 1] : NUL;
+            next = (i + 1 < length) ? chars[i + 1] : NUL;
+
+            if (chars[i] == singleLevelWildcardChar) {
+                // prev and next can be only '/' or none
+                if (prev != topicLevelSeparatorChar && prev != NUL || next != topicLevelSeparatorChar && next != NUL) {
+                    throw new IllegalArgumentException(String.format(
+                            "Invalid usage of single-level wildcard in topic string '%s'!",
+                            new Object[] { topicString }));
+                }
+            }
+        }
+    }
 	
 }

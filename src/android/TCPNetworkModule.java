@@ -1,10 +1,14 @@
-/* 
- * Copyright (c) 2009, 2012 IBM Corp.
+/*******************************************************************************
+ * Copyright (c) 2009, 2014 IBM Corp.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * and Eclipse Distribution License v1.0 which accompany this distribution. 
+ *
+ * The Eclipse Public License is available at 
+ *    http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at 
+ *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
  * Contributors:
  *    Dave Locke - initial API and implementation and/or initial documentation
@@ -29,14 +33,14 @@ import org.eclipse.paho.client.mqttv3.logging.LoggerFactory;
  * A network module for connecting over TCP. 
  */
 public class TCPNetworkModule implements NetworkModule {
+	private static final String CLASS_NAME = TCPNetworkModule.class.getName();
+	private static final Logger log = LoggerFactory.getLogger(LoggerFactory.MQTT_CLIENT_MSG_CAT,CLASS_NAME);
+
 	protected Socket socket;
 	private SocketFactory factory;
 	private String host;
 	private int port;
 	private int conTimeout;
-	
-	final static String className = TCPNetworkModule.class.getName();
-	Logger log = LoggerFactory.getLogger(LoggerFactory.MQTT_CLIENT_MSG_CAT,className);
 	
 	/**
 	 * Constructs a new TCPNetworkModule using the specified host and
@@ -60,7 +64,7 @@ public class TCPNetworkModule implements NetworkModule {
 //			InetAddress localAddr = InetAddress.getLocalHost();
 //			socket = factory.createSocket(host, port, localAddr, 0);
 			// @TRACE 252=connect to host {0} port {1} timeout {2}
-			log.fine(className,methodName, "252", new Object[] {host, new Integer(port), new Long(conTimeout*1000)});
+			log.fine(CLASS_NAME,methodName, "252", new Object[] {host, new Integer(port), new Long(conTimeout*1000)});
 			SocketAddress sockaddr = new InetSocketAddress(host, port);
 			socket = factory.createSocket();
 			socket.connect(sockaddr, conTimeout*1000);
@@ -71,7 +75,7 @@ public class TCPNetworkModule implements NetworkModule {
 		}
 		catch (ConnectException ex) {
 			//@TRACE 250=Failed to create TCP socket
-			log.fine(className,methodName,"250",null,ex);
+			log.fine(CLASS_NAME,methodName,"250",null,ex);
 			throw new MqttException(MqttException.REASON_CODE_SERVER_CONNECT_ERROR, ex);
 		}
 	}
